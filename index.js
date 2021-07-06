@@ -1,18 +1,3 @@
-var express = require("express");
-const axios = require("axios");
-var bodyParser = require("body-parser");
-require("dotenv").config();
-
-var app = express();
-
-
-const port = process.env.LOCAL_PORT
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
 
 const TelegramBot = require('node-telegram-bot-api');
 
@@ -34,7 +19,6 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
   // send back the matched "whatever" to the chat
   bot.sendMessage(chatId, resp);
 });
-
 // const TG = require('telegram-bot-api')
 
 // const api = new TG({
@@ -55,12 +39,3 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 //   console.log('API is started -BS')
 // })
 // .catch(console.err)
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-});
