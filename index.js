@@ -14,26 +14,47 @@ app.use(
   })
 );
 
-const TG = require('telegram-bot-api')
+const TelegramBot = require('node-telegram-bot-api');
 
-const api = new TG({
-    token: process.env.TELEGRAM_API_TOKEN
-})
+// replace the value below with the Telegram token you receive from @BotFather
+const token = process.env.TELEGRAM_API_TOKEN;
 
-api.getMe()
-.then(console.log)
-.catch(console.err)
+// Create a bot that uses 'polling' to fetch new updates
+const bot = new TelegramBot(token, {polling: true});
 
-// Define your message provider
-const mp = new TG.GetUpdateMessageProvider()
+// Matches "/echo [whatever]"
+bot.onText(/\/echo (.+)/, (msg, match) => {
+  // 'msg' is the received Message from Telegram
+  // 'match' is the result of executing the regexp above on the text content
+  // of the message
 
-// Set message provider and start API
-api.setMessageProvider(mp)
-api.start()
-.then(() => {
-  console.log('API is started -BS')
-})
-.catch(console.err)
+  const chatId = msg.chat.id;
+  const resp = match[1]; // the captured "whatever"
+
+  // send back the matched "whatever" to the chat
+  bot.sendMessage(chatId, resp);
+});
+
+// const TG = require('telegram-bot-api')
+
+// const api = new TG({
+//     token: process.env.TELEGRAM_API_TOKEN
+// })
+
+// api.getMe()
+// .then(console.log)
+// .catch(console.err)
+
+// // Define your message provider
+// const mp = new TG.GetUpdateMessageProvider()
+
+// // Set message provider and start API
+// api.setMessageProvider(mp)
+// api.start()
+// .then(() => {
+//   console.log('API is started -BS')
+// })
+// .catch(console.err)
 
 
 app.get('/', (req, res) => {
